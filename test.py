@@ -4,6 +4,17 @@ import websockets
 
 connected = set()
 
+
+async def consumer_handler(websocket):
+    async for message in websocket:
+        await consumer_handler(message)
+
+
+async def producer_handler(websocket):
+    while True:
+        message = await consumer_handler()
+        await websocket.send(message)
+
 async def handle_client(websocket, message):
 
     connected.add(websocket)

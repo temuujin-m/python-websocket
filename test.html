@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="openFunction()">Open</button>
+
+    <script>
+        function openFunction() {
+            const socket = new WebSocket('ws://localhost:8000');
+
+            navigator.geolocation.watchPosition(function(position) {
+                // user's latitude and longitude
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                console.log("Latitude: " + latitude + " Longitude: " + longitude);
+                var i = 0;
+                socket.onopen = function(event) {
+                    console.log('WebSocket connection is open');
+                    i++;
+                    socket.send(`latitude: ${latitude}, [${i}] longitude: ${longitude}`);
+                };
+            });
+        }
+    </script>
+</body>
+</html>
